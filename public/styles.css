@@ -722,7 +722,30 @@ body::before {
   font-weight: 500;
 }
 
-.msg-content { color: inherit; }
+.msg-content { 
+  color: inherit; 
+  font-size: 15px;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+.msg-content a {
+  color: var(--accent-solid);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(102,126,234,0.5);
+  transition: color .2s ease, border-color .2s ease;
+  word-break: break-word;
+}
+
+.msg-content a:hover, .msg-content a:focus {
+  color: #5568d3;
+  border-color: #5568d3;
+}
+
+[data-theme="light"] .msg-content a {
+  color: #4656c6;
+  border-bottom-color: rgba(70,86,198,.4);
+}
 
 .msg-footer { margin-top: 12px; display: flex; gap: 10px; }
 

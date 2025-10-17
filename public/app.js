@@ -165,6 +165,9 @@ function formatToHtml(text) {
   const safe = escapeHtml(text);
   let html = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // Convert plain URLs to clickable links
+  const urlRegex = /(https?:\/\/[\w.-]+(?:\/[\w\-._~:\/?#\[\]@!$&'()*+,;=.]+)?)/gi;
+  html = html.replace(urlRegex, (m) => `<a href="${m}" target="_blank" rel="noopener noreferrer">${m}</a>`);
   const lines = html.split(/\r?\n/);
   const out = [];
   let inList = false;
