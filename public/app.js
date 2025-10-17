@@ -252,6 +252,29 @@ function renderAssistantAnswer(container, html) {
   footer.appendChild(copyBtn);
   wrapper.appendChild(contentEl);
   wrapper.appendChild(footer);
+  
+  // Suggested prompts under the assistant answer
+  const suggestions = [
+    'Bu cevabı kısaca özetle',
+    'Daha teknik detay ver',
+    'Adım adım anlat',
+    'Bir örnek senaryo verir misin?'
+  ];
+  const sugWrap = document.createElement('div');
+  sugWrap.className = 'suggested-prompts';
+  const sugLabel = document.createElement('div');
+  sugLabel.className = 'suggested-label';
+  sugLabel.textContent = 'Önerilen istemler:';
+  sugWrap.appendChild(sugLabel);
+  suggestions.forEach(txt => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'prompt-btn suggestion-btn';
+    b.setAttribute('data-prompt', txt);
+    b.textContent = txt;
+    sugWrap.appendChild(b);
+  });
+  wrapper.appendChild(sugWrap);
   container.innerHTML = '';
   container.appendChild(wrapper);
   

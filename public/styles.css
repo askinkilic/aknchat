@@ -800,6 +800,37 @@ body::before {
 
 .msg-footer { margin-top: 12px; display: flex; gap: 10px; }
 
+.suggested-prompts { 
+  margin-top: 12px;
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 8px; 
+  align-items: center;
+}
+.suggested-label { 
+  font-size: 12px; 
+  color: var(--text-secondary);
+  margin-right: 4px;
+}
+.suggestion-btn { 
+  padding: 8px 12px; 
+  border-radius: 10px; 
+  border: 1px solid var(--card-border); 
+  background: var(--card-glass);
+  backdrop-filter: blur(8px);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px; 
+  font-weight: 500; 
+  transition: all 0.2s ease;
+}
+.suggestion-btn:hover { 
+  transform: translateY(-1px);
+  border-color: var(--accent-solid);
+  background: var(--card-hover);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
+}
+
 .copy-btn { 
   padding: 8px 12px; 
   border-radius: 8px; 
