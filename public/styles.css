@@ -1,5 +1,6 @@
 :root {
   /* Ultra-Modern 2025 Design - Glassmorphism & Gradients - Dark Theme */
+  --nav-height: 66px;
   --bg-primary: #0a0e27;
   --bg-secondary: #0f1419;
   --bg-gradient-start: #667eea;
@@ -116,7 +117,7 @@ body::before {
   border-bottom: 1px solid var(--card-border); 
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
   z-index: 100;
-  min-height: 60px;
+  min-height: var(--nav-height);
 }
 
 .nav-toggle {
@@ -182,40 +183,42 @@ body::before {
     box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
   }
 }
-.nav a { 
-  color: var(--text-secondary); 
-  text-decoration: none; 
-  padding: 8px 16px; 
-  border-radius: 8px; 
-  font-size: 14px; 
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+.nav a { position: relative; }
+
+.nav-btn {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  background: transparent;
 }
-.nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--accent-solid);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateX(-50%);
-}
-.nav a:hover { 
+
+.nav-btn:hover, .nav-btn:focus-visible {
   color: var(--text);
-  transform: translateY(-2px);
+  background: var(--card-glass);
+  border-color: var(--card-border);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
-.nav a:hover::after {
-  width: 80%;
+
+.nav-btn.active {
+  color: #fff;
+  background: var(--accent);
+  border-color: transparent;
+  box-shadow: 0 8px 24px var(--accent-glow);
 }
+
+/* Anchor offset to avoid being hidden under sticky nav */
+[id] { scroll-margin-top: calc(var(--nav-height) + 12px); }
 
 /* App layout - Ultra Modern with Glassmorphism */
 .app { 
   display: grid; 
   grid-template-columns: 300px 1fr; 
-  height: calc(100vh - 70px);
+  height: calc(100vh - var(--nav-height));
   position: relative;
   z-index: 1;
 }

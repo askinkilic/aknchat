@@ -69,7 +69,20 @@ document.addEventListener('click', (e) => {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       siteNav?.classList.remove('open');
       navToggle?.setAttribute('aria-expanded', 'false');
+      // Active state for nav buttons
+      document.querySelectorAll('.nav-btn').forEach(a => a.classList.remove('active'));
+      if (target.classList.contains('nav-btn')) target.classList.add('active');
     }
+  }
+});
+
+// Set active on load based on current hash
+window.addEventListener('load', () => {
+  const hash = location.hash || '#main';
+  const link = document.querySelector(`.nav-btn[href="${hash}"]`);
+  if (link) {
+    document.querySelectorAll('.nav-btn').forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
   }
 });
 
