@@ -1,0 +1,49 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Copilot style gradient background -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sparkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd89b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#19547b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main circle background -->
+  <circle cx="60" cy="60" r="55" fill="url(#logoGradient)" opacity="0.9"/>
+  <circle cx="60" cy="60" r="55" fill="none" stroke="url(#logoGradient)" stroke-width="3"/>
+  
+  <!-- AI Brain/Chat bubble combination -->
+  <g transform="translate(30, 35)">
+    <!-- Chat bubble base -->
+    <path d="M 5 10 Q 5 5, 10 5 L 50 5 Q 55 5, 55 10 L 55 35 Q 55 40, 50 40 L 20 40 L 10 50 L 12 40 L 10 40 Q 5 40, 5 35 Z" 
+          fill="white" opacity="0.95"/>
+    
+    <!-- AI Neural network nodes -->
+    <circle cx="15" cy="18" r="3" fill="url(#logoGradient)"/>
+    <circle cx="30" cy="15" r="3" fill="url(#logoGradient)"/>
+    <circle cx="45" cy="18" r="3" fill="url(#logoGradient)"/>
+    <circle cx="22" cy="28" r="3" fill="url(#logoGradient)"/>
+    <circle cx="38" cy="28" r="3" fill="url(#logoGradient)"/>
+    
+    <!-- Neural connections -->
+    <line x1="15" y1="18" x2="30" y2="15" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="30" y1="15" x2="45" y2="18" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="15" y1="18" x2="22" y2="28" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="45" y1="18" x2="38" y2="28" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="22" y1="28" x2="38" y2="28" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="30" y1="15" x2="22" y2="28" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="30" y1="15" x2="38" y2="28" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.6"/>
+  </g>
+  
+  <!-- Copilot-style sparkles -->
+  <g opacity="0.8">
+    <path d="M 95 25 L 97 27 L 99 25 L 97 23 Z" fill="url(#sparkGradient)"/>
+    <path d="M 20 95 L 22 97 L 24 95 L 22 93 Z" fill="url(#sparkGradient)"/>
+    <path d="M 105 70 L 106 71 L 107 70 L 106 69 Z" fill="url(#sparkGradient)"/>
+    <path d="M 15 30 L 16 31 L 17 30 L 16 29 Z" fill="url(#sparkGradient)"/>
+  </g>
+</svg>

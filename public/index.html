@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://github.com/askinkilic/aknchat" />
     
     <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +31,11 @@
     <div class="grid"></div>
 
     <header class="nav" role="banner">
-      <div class="brand">aknchat</div>
+      <div class="brand">
+        <img src="/logo.svg" alt="AKNCHAT Logo" class="brand-logo" />
+        <span class="brand-text">AKNCHAT</span>
+        <span class="brand-badge">AI</span>
+      </div>
       <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menüyü aç/kapat">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -57,7 +61,15 @@
 
       <section id="chat" class="chat-pane">
         <header class="chat-pane-head">
-          <h1>aknchat</h1>
+          <div class="head-left">
+            <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Kenar çubuğunu aç/kapat" title="Kenar çubuğunu aç/kapat">
+              <span class="toggle-icon">☰</span>
+            </button>
+            <h1>
+              <img src="/logo.svg" alt="AKNCHAT" class="chat-logo" />
+              AKNCHAT
+            </h1>
+          </div>
           <div class="head-controls">
             <select id="model-select" aria-label="Model seç">
               <option value="gpt-5-mini">gpt-5-mini</option>
@@ -66,7 +78,47 @@
             <button id="theme-toggle" class="theme-toggle" aria-label="Tema değiştir">Açık/Koyu</button>
           </div>
         </header>
-        <div id="messages" class="messages" role="log" aria-live="polite"></div>
+        <div id="messages" class="messages" role="log" aria-live="polite">
+          <!-- Welcome Screen -->
+          <div class="welcome-screen" id="welcome-screen">
+            <div class="welcome-logo">
+              <img src="/logo.svg" alt="AKNCHAT" />
+            </div>
+            <h2 class="welcome-title">AKNCHAT'e Hoş Geldiniz! 👋</h2>
+            <p class="welcome-subtitle">Azure OpenAI ile güçlendirilmiş, yeni nesil yapay zeka sohbet asistanınız</p>
+            
+            <div class="features-grid">
+              <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Akıllı Yanıtlar</h3>
+                <p>GPT-5 teknolojisi ile doğal dil anlama</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3>Görsel Analiz</h3>
+                <p>Resimlerinizi anlayıp yorumlayabilirim</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Oturum Yönetimi</h3>
+                <p>Sohbet geçmişinizi kaydedin ve yönetin</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Modern Tasarım</h3>
+                <p>Glassmorphism ve dark mode desteği</p>
+              </div>
+            </div>
+            
+            <div class="quick-prompts">
+              <p class="prompts-label">💡 Örnek sorular:</p>
+              <button class="prompt-btn" data-prompt="Python'da liste comprehension nasıl kullanılır?">🐍 Python hakkında</button>
+              <button class="prompt-btn" data-prompt="Modern web tasarım trendleri nelerdir?">🎨 Web tasarım</button>
+              <button class="prompt-btn" data-prompt="Yapay zeka teknolojileri nedir?">🤖 Yapay zeka</button>
+              <button class="prompt-btn" data-prompt="Azure OpenAI servislerini anlat">☁️ Azure servisleri</button>
+            </div>
+          </div>
+        </div>
         <form id="chat-form" class="chat-input" autocomplete="off">
           <div id="attachments" class="attachments" aria-live="polite"></div>
           <div class="input-row">

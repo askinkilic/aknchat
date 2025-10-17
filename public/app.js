@@ -12,6 +12,8 @@ const clearBtn = document.getElementById('clear-history');
 const fileInput = document.getElementById('file-input');
 const pickImageBtn = document.getElementById('pick-image');
 const attachmentsEl = document.getElementById('attachments');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const sidebar = document.querySelector('.sidebar');
 
 yearEl.textContent = new Date().getFullYear();
 
@@ -75,10 +77,35 @@ if (navToggle && siteNav) {
   navToggle.addEventListener('click', () => {
     const open = siteNav.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', String(open));
-    const sidebar = document.querySelector('.sidebar');
     sidebar?.classList.toggle('open');
   });
 }
+
+// Desktop sidebar toggle
+if (sidebarToggle && sidebar) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    const icon = sidebarToggle.querySelector('.toggle-icon');
+    if (icon) {
+      icon.textContent = sidebar.classList.contains('collapsed') ? '☰' : '✕';
+    }
+  });
+}
+
+// Quick prompt buttons
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('prompt-btn')) {
+    const prompt = e.target.getAttribute('data-prompt');
+    if (prompt && inputEl) {
+      inputEl.value = prompt;
+      inputEl.focus();
+      // Auto-submit the form
+      setTimeout(() => {
+        formEl.requestSubmit();
+      }, 100);
+    }
+  }
+});
 
 if (inputEl?.tagName === 'TEXTAREA') {
   inputEl.addEventListener('input', () => {
@@ -240,18 +267,85 @@ function updateActiveTitleFromFirstUserMessage() {
 
 function renderSessions() {
   sessionsListEl.innerHTML = '';
-  sessions.forEach(s => {
+  sessions.forEach((s, index) => {
     const btn = document.createElement('button');
     btn.className = 'session-item' + (s.id === activeSessionId ? ' active' : '');
     btn.setAttribute('role', 'option');
     btn.setAttribute('aria-selected', s.id === activeSessionId ? 'true' : 'false');
+    
+    // Session number
+    const numberSpan = document.createElement('span');
+    numberSpan.className = 'session-number';
+    numberSpan.textContent = `#${index + 1}`;
+    btn.appendChild(numberSpan);
+    
+    // Session title
     const span = document.createElement('span');
     span.className = 'session-title';
     span.textContent = s.title || 'Yeni sohbet';
     btn.appendChild(span);
+    
+    // Click to select
     btn.addEventListener('click', () => setActiveSession(s.id));
+    
+    // Right-click context menu
+    btn.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      showContextMenu(e, s.id);
+    });
+    
     sessionsListEl.appendChild(btn);
   });
+}
+
+// Context menu for right-click
+function showContextMenu(e, sessionId) {
+  // Remove existing context menu
+  const existingMenu = document.querySelector('.context-menu');
+  if (existingMenu) existingMenu.remove();
+  
+  const menu = document.createElement('div');
+  menu.className = 'context-menu';
+  menu.style.left = e.pageX + 'px';
+  menu.style.top = e.pageY + 'px';
+  
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'context-menu-item delete';
+  deleteBtn.innerHTML = '🗑️ Bu sohbeti sil';
+  deleteBtn.addEventListener('click', () => {
+    deleteSession(sessionId);
+    menu.remove();
+  });
+  
+  menu.appendChild(deleteBtn);
+  document.body.appendChild(menu);
+  
+  // Close menu on click outside
+  setTimeout(() => {
+    document.addEventListener('click', () => menu.remove(), { once: true });
+  }, 0);
+}
+
+function deleteSession(sessionId) {
+  if (sessions.length === 1) {
+    showToast('Son sohbet silinemez');
+    return;
+  }
+  
+  const index = sessions.findIndex(s => s.id === sessionId);
+  if (index === -1) return;
+  
+  sessions.splice(index, 1);
+  
+  // If deleted session was active, select another
+  if (activeSessionId === sessionId) {
+    activeSessionId = sessions[0]?.id;
+  }
+  
+  saveSessions();
+  renderSessions();
+  renderActiveSession();
+  showToast('Sohbet silindi');
 }
 
 function renderActiveSession() {
