@@ -7,6 +7,7 @@ const siteNav = document.getElementById('site-nav');
 const newChatBtn = document.getElementById('new-chat');
 const sessionsListEl = document.getElementById('sessions-list');
 const modelSelect = document.getElementById('model-select');
+const paletteSelect = document.getElementById('palette-select');
 const themeToggle = document.getElementById('theme-toggle');
 const clearBtn = document.getElementById('clear-history');
 const fileInput = document.getElementById('file-input');
@@ -34,6 +35,11 @@ if (prefs.model && modelSelect) {
   modelSelect.value = prefs.model;
 }
 
+// Initialize palette (default: blue)
+const initialPalette = prefs.palette || 'blue';
+document.documentElement.setAttribute('data-palette', initialPalette);
+if (paletteSelect) paletteSelect.value = initialPalette;
+
 if (themeToggle) themeToggle.addEventListener('click', () => {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const isLight = currentTheme === 'light';
@@ -51,6 +57,13 @@ if (themeToggle) themeToggle.addEventListener('click', () => {
 
 if (modelSelect) modelSelect.addEventListener('change', () => {
   prefs = { ...prefs, model: modelSelect.value };
+  savePrefs(prefs);
+});
+
+if (paletteSelect) paletteSelect.addEventListener('change', () => {
+  const val = paletteSelect.value;
+  document.documentElement.setAttribute('data-palette', val);
+  prefs = { ...prefs, palette: val };
   savePrefs(prefs);
 });
 

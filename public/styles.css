@@ -3,8 +3,8 @@
   --nav-height: 66px;
   --bg-primary: #0a0e27;
   --bg-secondary: #0f1419;
-  --bg-gradient-start: #667eea;
-  --bg-gradient-end: #764ba2;
+  --bg-gradient-start: #667eea; /* Gradient start color */
+  --bg-gradient-end: #764ba2; /* Gradient end color */
   --sidebar-glass: rgba(15, 20, 25, 0.7);
   --card-glass: rgba(255, 255, 255, 0.05);
   --card-hover: rgba(255, 255, 255, 0.1);
@@ -12,10 +12,10 @@
   --text: #ffffff;
   --text-secondary: #a0aec0;
   --muted: #718096;
-  --accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --accent-solid: #667eea;
-  --accent-hover: #5568d3;
-  --accent-glow: rgba(102, 126, 234, 0.4);
+  --accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Accent gradient */
+  --accent-solid: #667eea; /* Solid accent color */
+  --accent-hover: #5568d3; /* Hover accent color */
+  --accent-glow: rgba(102, 126, 234, 0.4); /* Accent glow effect */
   --success: #48bb78;
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   --glow: 0 0 20px rgba(102, 126, 234, 0.3);
@@ -25,8 +25,8 @@
 [data-theme="light"] {
   --bg-primary: #f7f9fc;
   --bg-secondary: #ffffff;
-  --bg-gradient-start: #667eea;
-  --bg-gradient-end: #764ba2;
+  --bg-gradient-start: #667eea; /* Gradient start color for light theme */
+  --bg-gradient-end: #764ba2; /* Gradient end color for light theme */
   --sidebar-glass: rgba(255, 255, 255, 0.9);
   --card-glass: rgba(255, 255, 255, 0.6);
   --card-hover: rgba(102, 126, 234, 0.08);
@@ -34,13 +34,62 @@
   --text: #1a202c;
   --text-secondary: #4a5568;
   --muted: #718096;
-  --accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --accent-solid: #667eea;
-  --accent-hover: #5568d3;
-  --accent-glow: rgba(102, 126, 234, 0.2);
+  --accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Accent gradient for light theme */
+  --accent-solid: #667eea; /* Solid accent color for light theme */
+  --accent-hover: #5568d3; /* Hover accent color for light theme */
+  --accent-glow: rgba(102, 126, 234, 0.2); /* Accent glow effect for light theme */
   --success: #48bb78;
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   --glow: 0 0 20px rgba(102, 126, 234, 0.15);
+}
+
+/* Palette variants */
+[data-palette="blue"] {
+  --accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --accent-solid: #667eea;
+  --accent-hover: #5568d3;
+  --accent-glow: rgba(102, 126, 234, 0.35);
+}
+
+[data-palette="red"] {
+  --accent: linear-gradient(135deg, #ff6a88 0%, #ff3c41 100%);
+  --accent-solid: #ff4d5a;
+  --accent-hover: #e13b48;
+  --accent-glow: rgba(255, 77, 90, 0.35);
+}
+
+[data-palette="yellow"] {
+  --accent: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  --accent-solid: #f6c343;
+  --accent-hover: #e0b234;
+  --accent-glow: rgba(246, 195, 67, 0.35);
+}
+
+[data-palette="white"] {
+  --accent: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  --accent-solid: #94a3b8;
+  --accent-hover: #7c8da4;
+  --accent-glow: rgba(148, 163, 184, 0.35);
+}
+
+/* Palette selector styling inherit existing control look */
+.head-controls #palette-select {
+  padding: 10px 14px; 
+  border-radius: 10px; 
+  border: 1px solid var(--card-border); 
+  background: var(--card-glass);
+  backdrop-filter: blur(10px);
+  color: var(--text); 
+  font-size: 13px; 
+  cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+
+.head-controls #palette-select:hover {
+  border-color: var(--accent-solid);
+  background: var(--card-hover);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 [data-theme="light"] body {
