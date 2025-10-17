@@ -129,7 +129,15 @@ function pushMessage(role, content) {
     div.innerHTML = typeof content === 'string' ? content : '';
   }
   messagesEl.appendChild(div);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  
+  // Scroll to bottom with smooth behavior
+  setTimeout(() => {
+    messagesEl.scrollTo({
+      top: messagesEl.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, 100);
+  
   return div;
 }
 
@@ -214,6 +222,14 @@ function renderAssistantAnswer(container, html) {
   wrapper.appendChild(footer);
   container.innerHTML = '';
   container.appendChild(wrapper);
+  
+  // Scroll to show the new content
+  setTimeout(() => {
+    messagesEl.scrollTo({
+      top: messagesEl.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, 50);
 }
 
 // Session management
@@ -476,8 +492,20 @@ formEl.addEventListener('submit', async (e) => {
       || (Array.isArray(data?.choices?.[0]?.content) ? data.choices[0].content.find(p => p?.type === 'text')?.text : null)
       || 'Cevap alınamadı.';
 
-    s.messages.push({ role: 'assistant', content: answer }); renderAssistantAnswer(assistantEl, formatToHtml(answer)); saveSessions();
-  } catch (err) { assistantEl.textContent = 'Ağ hatası. Tekrar deneyin.'; }
+    s.messages.push({ role: 'assistant', content: answer }); 
+    renderAssistantAnswer(assistantEl, formatToHtml(answer)); 
+    saveSessions();
+    
+    // Scroll to bottom after answer is rendered
+    setTimeout(() => {
+      messagesEl.scrollTo({
+        top: messagesEl.scrollHeight,
+        behavior: 'smooth'
+      });
+    }, 150);
+  } catch (err) { 
+    assistantEl.textContent = 'Ağ hatası. Tekrar deneyin.'; 
+  }
   finally {
     // Reset attachments
     pendingImages = []; attachmentsEl.innerHTML = '';
