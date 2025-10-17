@@ -145,8 +145,8 @@ function formatToHtml(text) {
 function createThinkingNode() {
   const span = document.createElement('span');
   span.className = 'typing';
-  span.setAttribute('aria-label', 'Düşünüyor');
-  span.innerHTML = 'Düşünüyor <span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  span.setAttribute('aria-label', 'AI yanıtlıyor');
+  span.innerHTML = '🤖 AI yanıtlıyor <span class="dot"></span><span class="dot"></span><span class="dot"></span>';
   return span;
 }
 
