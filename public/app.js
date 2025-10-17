@@ -130,13 +130,10 @@ function pushMessage(role, content) {
   }
   messagesEl.appendChild(div);
   
-  // Scroll to bottom with smooth behavior
-  setTimeout(() => {
-    messagesEl.scrollTo({
-      top: messagesEl.scrollHeight,
-      behavior: 'smooth'
-    });
-  }, 100);
+  // Force scroll to bottom
+  requestAnimationFrame(() => {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
   
   return div;
 }
@@ -223,13 +220,10 @@ function renderAssistantAnswer(container, html) {
   container.innerHTML = '';
   container.appendChild(wrapper);
   
-  // Scroll to show the new content
-  setTimeout(() => {
-    messagesEl.scrollTo({
-      top: messagesEl.scrollHeight,
-      behavior: 'smooth'
-    });
-  }, 50);
+  // Force scroll to bottom
+  requestAnimationFrame(() => {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
 }
 
 // Session management
@@ -496,13 +490,10 @@ formEl.addEventListener('submit', async (e) => {
     renderAssistantAnswer(assistantEl, formatToHtml(answer)); 
     saveSessions();
     
-    // Scroll to bottom after answer is rendered
-    setTimeout(() => {
-      messagesEl.scrollTo({
-        top: messagesEl.scrollHeight,
-        behavior: 'smooth'
-      });
-    }, 150);
+    // Force scroll to bottom after answer is rendered
+    requestAnimationFrame(() => {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    });
   } catch (err) { 
     assistantEl.textContent = 'Ağ hatası. Tekrar deneyin.'; 
   }

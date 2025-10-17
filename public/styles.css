@@ -368,13 +368,14 @@ body::before {
 }
 
 .chat-pane { 
-  display: grid; 
-  grid-template-rows: auto 1fr auto; 
+  display: flex;
+  flex-direction: column;
   height: 100%; 
   background: rgba(15, 20, 25, 0.4);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   position: relative;
+  overflow: hidden;
 }
 
 .chat-pane-head { 
@@ -389,6 +390,7 @@ body::before {
   -webkit-backdrop-filter: blur(20px);
   position: relative;
   z-index: 5;
+  flex-shrink: 0;
 }
 
 .chat-pane-head h1 { 
@@ -467,7 +469,8 @@ body::before {
 }
 
 .messages { 
-  flex: 1; 
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto; 
   overflow-x: hidden;
   padding: 24px; 
@@ -787,6 +790,7 @@ body::before {
   background: rgba(10, 14, 39, 0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  flex-shrink: 0;
 }
 
 .attachments { 
