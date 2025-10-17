@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>aknchat</title>
+    <meta name="description" content="Açık bir chatbot: aknchat" />
+    <meta name="theme-color" content="#0f1023" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">İçeriğe geç</a>
+    <div class="bg"></div>
+    <div class="grid"></div>
+
+    <header class="nav" role="banner">
+      <div class="brand">aknchat</div>
+      <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menüyü aç/kapat">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <nav id="site-nav" class="nav-links" role="navigation">
+        <a href="#chat">Sohbet</a>
+        <a href="https://azure.microsoft.com" target="_blank" rel="noopener" aria-label="Azure sitesini yeni sekmede aç">Azure</a>
+      </nav>
+    </header>
+
+    <main id="main" class="app" role="main">
+      <aside class="sidebar" aria-label="Sohbet geçmişi">
+        <div class="sidebar-top">
+          <button id="new-chat" class="new-chat" aria-label="Yeni sohbet">+ Yeni sohbet</button>
+        </div>
+        <div id="sessions-list" class="sessions" role="listbox" aria-label="Oturumlar"></div>
+        <div class="sidebar-bottom">
+          <div class="hint">Geçmiş cihazında saklanır.</div>
+          <button id="clear-history" class="new-chat" aria-label="Geçmişi sil">Geçmişi sil</button>
+        </div>
+      </aside>
+
+      <section id="chat" class="chat-pane">
+        <header class="chat-pane-head">
+          <h1>aknchat</h1>
+          <div class="head-controls">
+            <select id="model-select" aria-label="Model seç">
+              <option value="gpt-5-mini">gpt-5-mini</option>
+              <option value="MODEL">MODEL</option>
+            </select>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Tema değiştir">Açık/Koyu</button>
+          </div>
+        </header>
+        <div id="messages" class="messages" role="log" aria-live="polite"></div>
+        <form id="chat-form" class="chat-input" autocomplete="off">
+          <div id="attachments" class="attachments" aria-live="polite"></div>
+          <div class="input-row">
+            <button id="pick-image" class="icon-btn" type="button" title="Resim ekle" aria-label="Resim ekle">📎</button>
+            <input id="file-input" type="file" accept="image/*" multiple hidden />
+            <textarea id="user-input" rows="1" placeholder="Bir şey yazın veya resim yapıştırın..." required aria-label="Mesajınız"></textarea>
+            <button type="submit" aria-label="Mesajı gönder">Gönder</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">© <span id="year"></span> aknchat • Azure OpenAI ile güçlendirildi</footer>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
