@@ -56,7 +56,10 @@
         <div id="sessions-list" class="sessions" role="listbox" aria-label="Oturumlar"></div>
         <div class="sidebar-bottom">
           <div class="hint">Geçmiş cihazında saklanır.</div>
-          <button id="clear-history" class="new-chat" aria-label="Geçmişi sil">Geçmişi sil</button>
+          <div class="sidebar-actions">
+            <button id="open-trash" class="new-chat" aria-label="Çöp kutusunu aç">🗑️ Çöp Kutusu</button>
+            <button id="clear-history" class="new-chat" aria-label="Geçmişi sil">Geçmişi sil</button>
+          </div>
         </div>
       </aside>
 
@@ -139,6 +142,22 @@
     </main>
 
     <footer class="footer" role="contentinfo">© <span id="year"></span> aknchat • Azure OpenAI ile güçlendirildi</footer>
+
+    <!-- Trash Modal -->
+    <div id="trash-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="trash-title">
+      <div class="modal-content">
+        <header class="modal-head">
+          <h2 id="trash-title">🗑️ Çöp Kutusu</h2>
+          <button id="close-trash" class="icon-btn" aria-label="Kapat">✕</button>
+        </header>
+        <div id="trash-list" class="trash-list"></div>
+        <footer class="modal-foot">
+          <button id="restore-all" class="btn-secondary">Tümünü Geri Al</button>
+          <button id="empty-trash" class="btn-danger">Çöp Kutusunu Boşalt</button>
+        </footer>
+      </div>
+      <div class="modal-backdrop" tabindex="-1"></div>
+    </div>
 
     <script src="/app.js" type="module"></script>
   </body>

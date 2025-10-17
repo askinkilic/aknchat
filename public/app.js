@@ -10,6 +10,12 @@ const modelSelect = document.getElementById('model-select');
 const paletteSelect = document.getElementById('palette-select');
 const themeToggle = document.getElementById('theme-toggle');
 const clearBtn = document.getElementById('clear-history');
+const openTrashBtn = document.getElementById('open-trash');
+const trashModal = document.getElementById('trash-modal');
+const trashListEl = document.getElementById('trash-list');
+const closeTrashBtn = document.getElementById('close-trash');
+const restoreAllBtn = document.getElementById('restore-all');
+const emptyTrashBtn = document.getElementById('empty-trash');
 const fileInput = document.getElementById('file-input');
 const pickImageBtn = document.getElementById('pick-image');
 const attachmentsEl = document.getElementById('attachments');
@@ -257,6 +263,7 @@ function renderAssistantAnswer(container, html) {
 
 // Session management
 const STORAGE_KEY = 'aknchat.sessions.v1';
+const TRASH_KEY = 'aknchat.trash.v1';
 let sessions = [];
 let activeSessionId = null;
 
@@ -271,6 +278,19 @@ function loadSessions() {
 
 function saveSessions() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+}
+
+function loadTrash() {
+  try {
+    const raw = localStorage.getItem(TRASH_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch { return []; }
+}
+
+function saveTrash(trash) {
+  localStorage.setItem(TRASH_KEY, JSON.stringify(trash));
 }
 
 function createSession(title = 'Yeni sohbet') {
@@ -370,21 +390,24 @@ function deleteSession(sessionId) {
     showToast('Son sohbet silinemez');
     return;
   }
-  
+
   const index = sessions.findIndex(s => s.id === sessionId);
   if (index === -1) return;
-  
+
+  const trash = loadTrash();
+  trash.unshift({ ...sessions[index], trashedAt: Date.now() });
+  saveTrash(trash);
   sessions.splice(index, 1);
-  
+
   // If deleted session was active, select another
   if (activeSessionId === sessionId) {
     activeSessionId = sessions[0]?.id;
   }
-  
+
   saveSessions();
   renderSessions();
   renderActiveSession();
-  showToast('Sohbet silindi');
+  showToast('Sohbet çöp kutusuna taşındı');
 }
 
 function renderActiveSession() {
@@ -414,8 +437,105 @@ if (sessions.length === 0) {
 
 if (newChatBtn) newChatBtn.addEventListener('click', () => createSession('Yeni sohbet'));
 if (clearBtn) clearBtn.addEventListener('click', () => {
-  if (!confirm('Tüm geçmişi silmek istediğinize emin misiniz?')) return;
-  sessions = []; saveSessions(); createSession('Yeni sohbet'); showToast('Geçmiş silindi');
+  if (!confirm('Tüm geçmişi çöp kutusuna taşımak istiyor musunuz?')) return;
+  const trash = loadTrash();
+  // Taşı: mevcut tüm oturumları tarihle birlikte ekle
+  sessions.filter(s => s.messages && s.messages.length).forEach(s => trash.unshift({ ...s, trashedAt: Date.now() }));
+  saveTrash(trash);
+  sessions = []; saveSessions(); createSession('Yeni sohbet'); showToast('Geçmiş çöp kutusuna taşındı');
+});
+
+// Trash UI
+function openTrash() {
+  renderTrashList();
+  trashModal?.setAttribute('aria-hidden', 'false');
+  trashModal?.classList.add('open');
+}
+
+function closeTrash() {
+  trashModal?.setAttribute('aria-hidden', 'true');
+  trashModal?.classList.remove('open');
+}
+
+function renderTrashList() {
+  if (!trashListEl) return;
+  const trash = loadTrash();
+  if (!trash.length) {
+    trashListEl.innerHTML = '<div class="empty">Çöp kutusu boş</div>';
+    return;
+  }
+  trashListEl.innerHTML = '';
+  trash.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'trash-row';
+    const title = document.createElement('div');
+    title.className = 'trash-title';
+    title.textContent = s.title || `Sohbet ${i+1}`;
+    const time = document.createElement('div');
+    time.className = 'trash-time';
+    const dt = new Date(s.trashedAt || Date.now());
+    time.textContent = dt.toLocaleString();
+    const actions = document.createElement('div');
+    actions.className = 'trash-actions';
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'btn-secondary';
+    restoreBtn.textContent = 'Geri Al';
+    restoreBtn.addEventListener('click', () => restoreFromTrash(s.id));
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-danger';
+    deleteBtn.textContent = 'Kalıcı Sil';
+    deleteBtn.addEventListener('click', () => permanentlyDelete(s.id));
+    actions.appendChild(restoreBtn);
+    actions.appendChild(deleteBtn);
+    row.appendChild(title);
+    row.appendChild(time);
+    row.appendChild(actions);
+    trashListEl.appendChild(row);
+  });
+}
+
+function restoreFromTrash(id) {
+  let trash = loadTrash();
+  const idx = trash.findIndex(s => s.id === id);
+  if (idx === -1) return;
+  const item = trash.splice(idx, 1)[0];
+  saveTrash(trash);
+  sessions.unshift(item);
+  saveSessions();
+  renderSessions();
+  renderActiveSession();
+  showToast('Sohbet geri alındı');
+  renderTrashList();
+}
+
+function permanentlyDelete(id) {
+  let trash = loadTrash();
+  const idx = trash.findIndex(s => s.id === id);
+  if (idx === -1) return;
+  trash.splice(idx, 1);
+  saveTrash(trash);
+  showToast('Kalıcı olarak silindi');
+  renderTrashList();
+}
+
+if (openTrashBtn) openTrashBtn.addEventListener('click', openTrash);
+if (closeTrashBtn) closeTrashBtn.addEventListener('click', closeTrash);
+if (restoreAllBtn) restoreAllBtn.addEventListener('click', () => {
+  const trash = loadTrash();
+  if (!trash.length) return;
+  sessions = [...trash, ...sessions];
+  saveSessions();
+  saveTrash([]);
+  renderSessions();
+  renderActiveSession();
+  showToast('Tüm sohbetler geri alındı');
+  renderTrashList();
+});
+if (emptyTrashBtn) emptyTrashBtn.addEventListener('click', () => {
+  if (!confirm('Çöp kutusunu boşaltmak istediğinize emin misiniz?')) return;
+  saveTrash([]);
+  showToast('Çöp kutusu boşaltıldı');
+  renderTrashList();
 });
 
 let pendingImages = [];

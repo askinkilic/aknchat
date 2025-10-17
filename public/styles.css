@@ -400,6 +400,8 @@ body::before {
   background: rgba(10, 14, 39, 0.5);
 }
 
+.sidebar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
 .sidebar-bottom .hint { 
   color: var(--muted); 
   font-size: 11px; 
@@ -1039,6 +1041,25 @@ body::before {
   align-items: center; 
   gap: 6px; 
 }
+
+/* Modal */
+.modal { display: none; position: fixed; inset: 0; z-index: 200; }
+.modal.open { display: block; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
+.modal-content { position: relative; z-index: 1; max-width: 720px; margin: 10vh auto; background: var(--bg-secondary); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--card-border); background: var(--card-glass); backdrop-filter: blur(10px); }
+.modal-head h2 { margin: 0; font-size: 18px; }
+.modal-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--card-border); background: var(--card-glass); }
+.trash-list { max-height: 60vh; overflow: auto; padding: 10px 16px; display: grid; gap: 10px; background: var(--bg-secondary); }
+.trash-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--card-border); border-radius: 12px; background: var(--card-glass); }
+.trash-title { font-weight: 600; color: var(--text); }
+.trash-time { color: var(--text-secondary); font-size: 12px; }
+.trash-actions { display: flex; gap: 8px; }
+.btn-secondary { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--card-glass); color: var(--text); cursor: pointer; }
+.btn-secondary:hover { background: var(--card-hover); }
+.btn-danger { padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 99, 71, 0.4); background: rgba(255, 99, 71, 0.1); color: #ff6a6a; cursor: pointer; }
+.btn-danger:hover { background: rgba(255, 99, 71, 0.2); }
+.trash-list .empty { text-align: center; color: var(--text-secondary); padding: 20px; }
 
 .typing .dot { 
   width: 8px; 
