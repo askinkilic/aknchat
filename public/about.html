@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hakkımızda - AKNCHAT</title>
+    <meta name="description" content="AKNCHAT hakkında bilgi - Azure OpenAI ile güçlendirilmiş yapay zeka sohbet asistanınız" />
+    <meta name="theme-color" content="#667eea" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">İçeriğe geç</a>
+    <div class="bg"></div>
+    <div class="grid"></div>
+
+    <header class="nav" role="banner">
+      <div class="brand">
+        <img src="/logo.svg" alt="AKNCHAT Logo" class="brand-logo" />
+        <span class="brand-text">AKNCHAT</span>
+        <span class="brand-badge">AI</span>
+      </div>
+      <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menüyü aç/kapat">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <nav id="site-nav" class="nav-links" role="navigation">
+        <a href="/" class="nav-btn" aria-label="Anasayfa">Anasayfa</a>
+        <a href="/chat.html" class="nav-btn" aria-label="Chat">Chat</a>
+        <a href="/login" class="nav-btn" aria-label="Giriş yap">Giriş yap</a>
+        <a href="/about.html" class="nav-btn active" aria-label="Hakkımızda">Hakkımızda</a>
+        <span id="user-info" class="nav-user" style="display:none;"></span>
+      </nav>
+    </header>
+
+    <main id="home-page" class="home-page" role="main">
+      <div class="home-hero">
+        <div class="home-logo">
+          <img src="/logo.svg" alt="AKNCHAT" />
+        </div>
+        <h1 class="home-title">Hakkımızda</h1>
+        <p class="home-subtitle">AKNCHAT projesi ve geliştiricisi hakkında bilgiler</p>
+      </div>
+
+      <div class="home-features">
+        <div class="feature-card-large">
+          <div class="feature-icon-large">🚀</div>
+          <h2>AKNCHAT Projesi</h2>
+          <p>AKNCHAT, Azure OpenAI teknolojisi ile güçlendirilmiş, modern ve kullanıcı dostu bir yapay zeka sohbet platformudur. Glassmorphism tasarım dili, açık/koyu tema desteği ve görsel analiz yetenekleriyle yeni nesil bir AI asistanı deneyimi sunar.</p>
+        </div>
+
+        <div class="feature-card-large">
+          <div class="feature-icon-large">👨‍💻</div>
+          <h2>Geliştirici</h2>
+          <p>Bu proje <strong>Aşkın KILIÇ</strong> tarafından geliştirilmiştir. Microsoft Azure OpenAI servislerini kullanarak, kullanıcı gizliliğini ön planda tutan, tarayıcı tabanlı oturum yönetimi ile güvenli bir platform oluşturulmuştur.</p>
+        </div>
+
+        <div class="feature-card-large">
+          <div class="feature-icon-large">🔧</div>
+          <h2>Teknolojiler</h2>
+          <p>
+            <strong>Backend:</strong> Node.js, Express, Azure AD B2C<br/>
+            <strong>Frontend:</strong> Vanilla JavaScript, Glassmorphism CSS<br/>
+            <strong>AI:</strong> Azure OpenAI (GPT-5, MODEL)<br/>
+            <strong>Depolama:</strong> LocalStorage, bulut senkronizasyonu
+          </p>
+        </div>
+
+        <div class="feature-card-large">
+          <div class="feature-icon-large">📧</div>
+          <h2>İletişim</h2>
+          <p>
+            Sorularınız, geri bildirimleriniz veya iş birliği teklifleriniz için:<br/>
+            <strong>GitHub:</strong> <a href="https://github.com/askinkilic/aknchat" target="_blank" rel="noopener" style="color:var(--accent-solid);">github.com/askinkilic/aknchat</a><br/>
+            <strong>Geliştirici:</strong> Aşkın KILIÇ
+          </p>
+        </div>
+      </div>
+
+      <div class="home-cta">
+        <h2>Hemen Deneyin</h2>
+        <p>AKNCHAT ile yapay zeka destekli sohbet deneyimini keşfedin</p>
+        <a href="/chat.html" class="cta-button">Sohbete Başla →</a>
+      </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">© <span id="year"></span> AKNCHAT • Azure OpenAI ile güçlendirildi</footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      
+      // Mobile nav toggle
+      const navToggle = document.getElementById('nav-toggle');
+      const siteNav = document.getElementById('site-nav');
+      if (navToggle) {
+        navToggle.addEventListener('click', () => {
+          const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+          navToggle.setAttribute('aria-expanded', !expanded);
+          siteNav.classList.toggle('active');
+        });
+      }
+
+      // Show user name if authenticated
+      fetch('/me').then(r=>r.ok?r.json():{authenticated:false}).then(me=>{
+        const userInfo = document.getElementById('user-info');
+        if (!userInfo) return;
+        if (me && me.authenticated) {
+          userInfo.style.display = '';
+          userInfo.textContent = me.name || me.email || 'Hesabım';
+        }
+      }).catch(()=>{});
+    </script>
+  </body>
+</html>

@@ -104,7 +104,7 @@
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
   background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
   -webkit-font-smoothing: antialiased;
@@ -258,6 +258,18 @@ body::before {
   background: var(--accent);
   border-color: transparent;
   box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+/* User info in navbar */
+.nav-user {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  background: var(--card-glass);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  margin-left: 8px;
 }
 
 /* Anchor offset to avoid being hidden under sticky nav */
@@ -430,6 +442,22 @@ body::before {
   -webkit-backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+}
+
+.chat-pane.drag-over::after {
+  content: 'Bırak ve yükle';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(102, 126, 234, 0.12);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  border: 2px dashed var(--accent-solid);
+  pointer-events: none;
 }
 
 .chat-pane-head { 
@@ -798,7 +826,38 @@ body::before {
   border-bottom-color: rgba(70,86,198,.4);
 }
 
-.msg-footer { margin-top: 12px; display: flex; gap: 10px; }
+  .msg-footer { 
+    margin-top: 12px; 
+    display: flex; 
+    gap: 6px; 
+    align-items: center;
+  }
+
+  .action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .action-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    transform: scale(1.1);
+  }
+
+  .action-btn:active {
+    transform: scale(0.95);
+  }
 
 .suggested-prompts { 
   margin-top: 12px;
@@ -807,28 +866,24 @@ body::before {
   gap: 8px; 
   align-items: center;
 }
-.suggested-label { 
-  font-size: 12px; 
-  color: var(--text-secondary);
-  margin-right: 4px;
-}
+
 .suggestion-btn { 
-  padding: 8px 12px; 
-  border-radius: 10px; 
+  padding: 8px 14px; 
+  border-radius: 12px; 
   border: 1px solid var(--card-border); 
   background: var(--card-glass);
   backdrop-filter: blur(8px);
   color: var(--text);
   cursor: pointer;
-  font-size: 12px; 
+  font-size: 13px; 
   font-weight: 500; 
   transition: all 0.2s ease;
 }
 .suggestion-btn:hover { 
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   border-color: var(--accent-solid);
   background: var(--card-hover);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
 }
 
 .copy-btn { 
@@ -1334,6 +1389,238 @@ body::before {
   
   .prompt-btn {
     width: 100%;
+  }
+}
+
+/* =====================================================
+   HOME PAGE STYLES
+   ===================================================== */
+
+.home-page {
+  width: 100%;
+  min-height: calc(100vh - var(--nav-height));
+  padding: 60px 20px;
+  overflow-y: auto;
+  background: transparent;
+}
+
+.home-hero {
+  max-width: 800px;
+  margin: 0 auto 80px;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.home-logo {
+  margin: 0 auto 30px;
+  width: 120px;
+  height: 120px;
+  background: var(--card-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  animation: floatAnimation 3s ease-in-out infinite;
+}
+
+.home-logo img {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 4px 12px var(--accent-glow));
+}
+
+.home-title {
+  font-size: 56px;
+  font-weight: 800;
+  background: var(--accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.home-subtitle {
+  font-size: 20px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.cta-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 16px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px var(--accent-glow);
+}
+
+.home-features {
+  max-width: 1200px;
+  margin: 0 auto 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.feature-card-large {
+  background: var(--card-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.feature-card-large:hover {
+  background: var(--card-hover);
+  transform: translateY(-5px);
+  box-shadow: var(--glow);
+}
+
+.feature-icon-large {
+  font-size: 64px;
+  margin-bottom: 20px;
+  display: inline-block;
+  animation: floatAnimation 3s ease-in-out infinite;
+}
+
+.feature-card-large h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--text);
+}
+
+.feature-card-large p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.home-cta {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--card-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.home-cta h2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  background: var(--accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.home-cta p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+}
+
+@keyframes floatAnimation {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Nav button active state */
+.nav-btn.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: var(--glow);
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Microsoft sign-in button */
+.ms-signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-glass);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.ms-signin:hover {
+  background: var(--card-hover);
+}
+
+@media (max-width: 600px) {
+  .home-title {
+    font-size: 36px;
+  }
+  
+  .home-subtitle {
+    font-size: 16px;
+  }
+  
+  .home-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .home-logo img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .feature-card-large {
+    padding: 30px 20px;
+  }
+  
+  .feature-card-large h2 {
+    font-size: 20px;
+  }
+  
+  .home-cta h2 {
+    font-size: 28px;
+  }
+  
+  .cta-button {
+    padding: 14px 32px;
+    font-size: 16px;
   }
 }
 

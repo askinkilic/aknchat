@@ -1,0 +1,15 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='720' height='300' viewBox='0 0 720 300' role='img' aria-label='Login illustration'>
+  <defs>
+    <linearGradient id='g1' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#667eea'/>
+      <stop offset='100%' stop-color='#764ba2'/>
+    </linearGradient>
+  </defs>
+  <rect x='0' y='0' width='720' height='300' fill='none'/>
+  <g opacity='0.9'>
+    <circle cx='120' cy='180' r='80' fill='url(#g1)' opacity='0.35'/>
+    <circle cx='640' cy='80' r='60' fill='url(#g1)' opacity='0.25'/>
+    <rect x='260' y='70' rx='16' ry='16' width='200' height='160' fill='url(#g1)' opacity='0.18'/>
+    <rect x='490' y='120' rx='12' ry='12' width='150' height='100' fill='#ffffff' opacity='0.08'/>
+  </g>
+</svg>

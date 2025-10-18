@@ -21,8 +21,9 @@ const pickImageBtn = document.getElementById('pick-image');
 const attachmentsEl = document.getElementById('attachments');
 const sidebarToggle = document.getElementById('sidebar-toggle');
 const sidebar = document.querySelector('.sidebar');
+const chatPane = document.querySelector('.chat-pane');
 
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+yearEl.textContent = new Date().getFullYear();
 
 const PREFS_KEY = 'aknchat.prefs.v1';
 function loadPrefs() { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch { return {}; } }
@@ -225,95 +226,6 @@ function showToast(message) {
   setTimeout(() => t.classList.remove('show'), 1200);
 }
 
-function extractSuggestions(raw) {
-  if (typeof raw !== 'string') return { text: '', suggestions: [] };
-  const re = /<akn-suggestions>([\s\S]*?)<\/akn-suggestions>/i;
-  const m = raw.match(re);
-  let suggestions = [];
-  if (m) {
-    suggestions = m[1].split('||').map(s => s.trim()).filter(Boolean);
-    raw = raw.replace(re, '').trim();
-  }
-  return { text: raw, suggestions };
-}
-
-function renderAssistantAnswer(container, html, suggestions) {
-  const wrapper = document.createElement('div');
-  const contentEl = document.createElement('div');
-  contentEl.className = 'msg-content';
-  contentEl.innerHTML = html;
-  
-  const footer = document.createElement('div');
-  footer.className = 'msg-footer';
-  
-  // Action buttons (copy, like, dislike, share, regenerate, more)
-  const actions = [
-    { icon: '📋', title: 'Kopyala', action: 'copy' },
-    { icon: '👍', title: 'Beğen', action: 'like' },
-    { icon: '👎', title: 'Beğenme', action: 'dislike' },
-    { icon: '📤', title: 'Paylaş', action: 'share' },
-    { icon: '🔄', title: 'Yeniden oluştur', action: 'regenerate' },
-    { icon: '⋯', title: 'Daha fazla', action: 'more' }
-  ];
-  
-  actions.forEach(({ icon, title, action }) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'action-btn';
-    btn.setAttribute('title', title);
-    btn.setAttribute('data-action', action);
-    btn.textContent = icon;
-    
-    // Copy action
-    if (action === 'copy') {
-      btn.addEventListener('click', async () => {
-        const plain = stripHtml(contentEl.innerHTML);
-        try {
-          await navigator.clipboard.writeText(plain);
-          showToast('Kopyalandı');
-        } catch {
-          const ta = document.createElement('textarea');
-          ta.value = plain; document.body.appendChild(ta); ta.select();
-          document.execCommand('copy'); document.body.removeChild(ta);
-          showToast('Kopyalandı');
-        }
-      });
-    } else {
-      // Placeholder for other actions
-      btn.addEventListener('click', () => {
-        showToast(`${title} özelliği yakında eklenecek`);
-      });
-    }
-    
-    footer.appendChild(btn);
-  });
-  
-  wrapper.appendChild(contentEl);
-  wrapper.appendChild(footer);
-  
-  // Suggested prompts disabled - only show answer text
-  // if (Array.isArray(suggestions) && suggestions.length) {
-  //   const sugWrap = document.createElement('div');
-  //   sugWrap.className = 'suggested-prompts';
-  //   suggestions.forEach(txt => {
-  //     const b = document.createElement('button');
-  //     b.type = 'button';
-  //     b.className = 'prompt-btn suggestion-btn';
-  //     b.setAttribute('data-prompt', txt);
-  //     b.textContent = txt;
-  //     sugWrap.appendChild(b);
-  //   });
-  //   wrapper.appendChild(sugWrap);
-  // }
-  container.innerHTML = '';
-  container.appendChild(wrapper);
-  
-  // Force scroll to bottom
-  requestAnimationFrame(() => {
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  });
-}
-
 // Session management
 const STORAGE_KEY = 'aknchat.sessions.v1';
 const TRASH_KEY = 'aknchat.trash.v1';
@@ -348,7 +260,7 @@ function saveTrash(trash) {
 
 function createSession(title = 'Yeni sohbet') {
   const id = 's_' + Date.now().toString(36);
-  const session = { id, title, model: modelSelect?.value || prefs.model || 'MODEL', messages: [ { role: 'system', content: 'Sen aknchat adlı yardımcı bir asistansın. Varsayılan olarak TÜRKÇE yanıt ver. Her yanıtın sonunda EKRANDA GÖRÜNMEYECEK şekilde öneri istemlerini şu biçimde ekle: <akn-suggestions>İpucu 1 || İpucu 2 || İpucu 3</akn-suggestions> (yalnızca etiket, ana metne yazma).' } ] };
+  const session = { id, title, model: modelSelect?.value || prefs.model || 'MODEL', messages: [ { role: 'system', content: 'Sen aknchat adlı yardımcı bir asistansın. Varsayılan olarak TÜRKÇE yanıt ver. Her yanıtın sonunda, kullanıcıya önerebileceğin 3-5 kısa takip istemini EKRANDA GÖRÜNMEYECEK şekilde ver. Bu önerileri SADECE tek satırda ve aynen şu etiket içinde sağla: <akn-suggestions>İpucu 1 || İpucu 2 || İpucu 3</akn-suggestions>. Etiket içinde başka hiçbir şey yazma, ana metne de yazma.' } ] };
   sessions.unshift(session);
   activeSessionId = id;
   saveSessions();
@@ -438,6 +350,73 @@ function showContextMenu(e, sessionId) {
   }, 0);
 }
 
+function extractSuggestions(raw) {
+  if (typeof raw !== 'string') return { text: '', suggestions: [] };
+  const re = /<akn-suggestions>([\s\S]*?)<\/akn-suggestions>/i;
+  const m = raw.match(re);
+  let suggestions = [];
+  if (m) {
+    suggestions = m[1].split('||').map(s => s.trim()).filter(Boolean);
+    raw = raw.replace(re, '').trim();
+  }
+  return { text: raw, suggestions };
+}
+
+function renderAssistantAnswer(container, html, suggestions) {
+  const wrapper = document.createElement('div');
+  const contentEl = document.createElement('div');
+  contentEl.className = 'msg-content';
+  contentEl.innerHTML = html;
+  const footer = document.createElement('div');
+  footer.className = 'msg-footer';
+  const copyBtn = document.createElement('button');
+  copyBtn.type = 'button';
+  copyBtn.className = 'copy-btn icon';
+  copyBtn.setAttribute('title', 'Kopyala');
+  copyBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H10V7h9v14z"></path></svg>';
+  copyBtn.addEventListener('click', async () => {
+    const plain = stripHtml(contentEl.innerHTML);
+    try {
+      await navigator.clipboard.writeText(plain);
+      showToast('Kopyalandı');
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = plain; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      showToast('Kopyalandı');
+    }
+  });
+  footer.appendChild(copyBtn);
+  wrapper.appendChild(contentEl);
+  wrapper.appendChild(footer);
+  
+  // Suggested prompts from model (if any)
+  if (Array.isArray(suggestions) && suggestions.length) {
+    const sugWrap = document.createElement('div');
+    sugWrap.className = 'suggested-prompts';
+    const sugLabel = document.createElement('div');
+    sugLabel.className = 'suggested-label';
+    sugLabel.textContent = 'Önerilen istemler:';
+    sugWrap.appendChild(sugLabel);
+    suggestions.forEach(txt => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'prompt-btn suggestion-btn';
+      b.setAttribute('data-prompt', txt);
+      b.textContent = txt;
+      sugWrap.appendChild(b);
+    });
+    wrapper.appendChild(sugWrap);
+  }
+  container.innerHTML = '';
+  container.appendChild(wrapper);
+  
+  // Force scroll to bottom
+  requestAnimationFrame(() => {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
+}
+
 function deleteSession(sessionId) {
   if (sessions.length === 1) {
     showToast('Son sohbet silinemez');
@@ -448,19 +427,31 @@ function deleteSession(sessionId) {
   if (index === -1) return;
 
   const trash = loadTrash();
-  trash.unshift({ ...sessions[index], trashedAt: Date.now() });
-  saveTrash(trash);
-  sessions.splice(index, 1);
-
-  // If deleted session was active, select another
-  if (activeSessionId === sessionId) {
-    activeSessionId = sessions[0]?.id;
+  // Suggested prompts from model (if any)
+  if (Array.isArray(suggestions) && suggestions.length) {
+    const sugWrap = document.createElement('div');
+    sugWrap.className = 'suggested-prompts';
+    const sugLabel = document.createElement('div');
+    sugLabel.className = 'suggested-label';
+    sugLabel.textContent = 'Önerilen istemler:';
+    sugWrap.appendChild(sugLabel);
+    suggestions.forEach(txt => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'prompt-btn suggestion-btn';
+      b.setAttribute('data-prompt', txt);
+      b.textContent = txt;
+      sugWrap.appendChild(b);
+    });
+    wrapper.appendChild(sugWrap);
   }
-
-  saveSessions();
-  renderSessions();
-  renderActiveSession();
-  showToast('Sohbet çöp kutusuna taşındı');
+  container.innerHTML = '';
+  container.appendChild(wrapper);
+  
+  // Force scroll to bottom
+  requestAnimationFrame(() => {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
 }
 
 function renderActiveSession() {
@@ -468,25 +459,14 @@ function renderActiveSession() {
   const s = getActiveSession();
   if (!s) return;
   if (modelSelect && s.model) modelSelect.value = s.model;
-  
-  const userMessages = s.messages.filter(m => m.role !== 'system');
-  
-  // Show welcome screen if no messages yet
-  if (userMessages.length === 0) {
-    const welcomeScreen = document.getElementById('welcome-screen');
-    if (welcomeScreen) {
-      messagesEl.appendChild(welcomeScreen.cloneNode(true));
+  s.messages.filter(m => m.role !== 'system').forEach(m => {
+    if (m.role === 'assistant') {
+      const el = pushMessage('assistant', '');
+      renderAssistantAnswer(el, formatToHtml(m.content), m.suggestions);
+    } else {
+      pushMessage('user', m.content);
     }
-  } else {
-    userMessages.forEach(m => {
-      if (m.role === 'assistant') {
-        const el = pushMessage('assistant', '');
-        renderAssistantAnswer(el, formatToHtml(m.content), m.suggestions);
-      } else {
-        pushMessage('user', m.content);
-      }
-    });
-  }
+  });
 }
 
 // Initialize sessions
@@ -641,6 +621,40 @@ document.addEventListener('paste', async (e) => {
   }
 });
 
+// Drag & Drop upload on chat area
+['dragenter','dragover'].forEach(evt => {
+  document.addEventListener(evt, (e) => {
+    if (!chatPane) return;
+    const dt = e.dataTransfer;
+    if (dt && dt.types && (dt.types.includes('Files'))) {
+      e.preventDefault();
+      chatPane.classList.add('drag-over');
+    }
+  });
+});
+
+['dragleave','dragend'].forEach(evt => {
+  document.addEventListener(evt, (e) => {
+    if (!chatPane) return;
+    chatPane.classList.remove('drag-over');
+  });
+});
+
+document.addEventListener('drop', async (e) => {
+  if (!chatPane) return;
+  const within = chatPane.contains(e.target) || e.target === chatPane;
+  const dt = e.dataTransfer;
+  if (!within || !dt) return;
+  e.preventDefault();
+  chatPane.classList.remove('drag-over');
+  const files = Array.from(dt.files || []).filter(f => f.type.startsWith('image/'));
+  for (const f of files) {
+    const data = await fileToDataUrl(f);
+    pendingImages.push(data);
+    addAttachmentPreview(data);
+  }
+});
+
 function buildMessagesForApi(messages, model) {
   // If Responses API (2025*), convert images to input_image blocks in the last user message
   const useResponses = true; // we default to 2025 in server for configured; server handles routing for MODEL/legacy
@@ -690,7 +704,18 @@ formEl.addEventListener('submit', async (e) => {
       body: JSON.stringify({ messages: s.messages, model: s.model, images: imagesToSend })
     });
 
-    if (!res.ok) { const err = await res.text(); assistantEl.textContent = 'Hata: ' + err; return; }
+    if (!res.ok) { 
+      let err = 'Bilinmeyen hata';
+      try {
+        const errData = await res.json();
+        err = errData.error || errData.details || JSON.stringify(errData);
+      } catch {
+        err = await res.text();
+      }
+      assistantEl.textContent = 'Hata: ' + err; 
+      console.error('API Error:', res.status, err);
+      return; 
+    }
 
     const data = await res.json();
     const answerRaw = data?.content
@@ -710,6 +735,7 @@ formEl.addEventListener('submit', async (e) => {
     });
   } catch (err) { 
     assistantEl.textContent = 'Ağ hatası. Tekrar deneyin.'; 
+    console.error('Network Error:', err);
   }
   finally {
     // Reset attachments

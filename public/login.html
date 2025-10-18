@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giriş Yap - AKNCHAT</title>
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">İçeriğe geç</a>
+    <div class="bg"></div>
+    <div class="grid"></div>
+
+    <header class="nav" role="banner">
+      <div class="brand">
+        <img src="/logo.svg" alt="AKNCHAT Logo" class="brand-logo" />
+        <span class="brand-text">AKNCHAT</span>
+        <span class="brand-badge">AI</span>
+      </div>
+      <nav id="site-nav" class="nav-links" role="navigation">
+        <a href="/" class="nav-btn" aria-label="Anasayfa">Anasayfa</a>
+        <a href="/chat.html" class="nav-btn" aria-label="Chat">Chat</a>
+        <a href="/login" class="nav-btn active" aria-label="Giriş yap">Giriş yap</a>
+        <a href="/about.html" class="nav-btn" aria-label="Hakkımızda">Hakkımızda</a>
+      </nav>
+    </header>
+
+    <main id="main" class="home-page" role="main" style="display:block;">
+      <div class="home-hero">
+        <div class="home-logo">
+          <img src="/logo.svg" alt="AKNCHAT" />
+        </div>
+        <h1 class="home-title">Üye Girişi</h1>
+        <p class="home-subtitle">Hesabınızla giriş yapın ve sohbet geçmişinizi cihazlar arasında senkronize edin.</p>
+        <a href="/auth/start" class="cta-button ms-signin" style="font-weight:700;">
+          <img src="/microsoft.svg" alt="" style="vertical-align:middle;margin-right:10px;"/>
+          Microsoft hesabınla giriş yap
+        </a>
+        <div style="margin-top:30px;">
+          <img src="/login-illustration.svg" alt="Güvenli giriş illüstrasyonu" class="login-illustration" />
+        </div>
+      </div>
+
+      <div class="home-features">
+        <div class="feature-card-large">
+          <div class="feature-icon-large">🔒</div>
+          <h2>Güvenli Kimlik Doğrulama</h2>
+          <p>Microsoft hesabınızla güvenli bir şekilde giriş yapın. Kimlik doğrulama Azure AD B2C ile yönetilir.</p>
+        </div>
+        <div class="feature-card-large">
+          <div class="feature-icon-large">💬</div>
+          <h2>Kişisel Sohbet Geçmişi</h2>
+          <p>Oturumlarınız hesabınıza bağlı kalır. Farklı cihazlarda kaldığınız yerden devam edin.</p>
+        </div>
+        <div class="feature-card-large">
+          <div class="feature-icon-large">⚙️</div>
+          <h2>Kolay Yönetim</h2>
+          <p>Hesap ve tercihlerinizi tek yerden yönetin. İsterseniz istediğiniz zaman çıkış yapın.</p>
+        </div>
+      </div>
+
+      <div class="home-cta">
+        <h2>Girişe hazır mısınız?</h2>
+        <p>Microsoft ile güvenli giriş ve kişisel deneyim.</p>
+        <a href="/auth/start" class="cta-button">
+          <img src="/microsoft.svg" alt="" style="vertical-align:middle;margin-right:10px;"/>
+          Microsoft ile devam et →
+        </a>
+      </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">© <span id="year"></span> AKNCHAT</footer>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

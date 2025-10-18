@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>aknchat - Azure OpenAI Chatbot</title>
+    <title>AKNCHAT - Azure OpenAI Chatbot</title>
     <meta name="description" content="Ultra-modern AI chatbot powered by Azure OpenAI with glassmorphism design" />
     <meta name="theme-color" content="#667eea" />
     <meta name="keywords" content="chatbot, AI, Azure OpenAI, artificial intelligence, chat" />
@@ -11,7 +11,7 @@
     
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="aknchat - Azure OpenAI Chatbot" />
+    <meta property="og:title" content="AKNCHAT - Azure OpenAI Chatbot" />
     <meta property="og:description" content="Ultra-modern AI chatbot with glassmorphism design" />
     <meta property="og:url" content="https://github.com/askinkilic/aknchat" />
     
@@ -21,7 +21,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="/styles.css" />
   </head>
@@ -42,123 +42,97 @@
         <span class="bar"></span>
       </button>
       <nav id="site-nav" class="nav-links" role="navigation">
-        <a href="#main" class="nav-btn" aria-label="Anasayfa">Anasayfa</a>
-        <a href="#chat" class="nav-btn" aria-label="Chat">Chat</a>
-        <a href="https://azure.microsoft.com" target="_blank" rel="noopener" class="nav-btn" aria-label="Azure sitesini yeni sekmede aç">Azure</a>
+        <a href="/" class="nav-btn active" aria-label="Anasayfa">Anasayfa</a>
+        <a href="/chat.html" class="nav-btn" aria-label="Chat">Chat</a>
+        <a href="/login" class="nav-btn" aria-label="Giriş yap">Giriş yap</a>
+        <a href="/about.html" class="nav-btn" aria-label="Hakkımızda">Hakkımızda</a>
+        <span id="user-info" class="nav-user" style="display:none;"></span>
       </nav>
     </header>
 
-    <main id="main" class="app" role="main">
-      <aside class="sidebar" aria-label="Sohbet geçmişi">
-        <div class="sidebar-top">
-          <button id="new-chat" class="new-chat" aria-label="Yeni sohbet">+ Yeni sohbet</button>
+    <!-- Home Page -->
+    <main id="home-page" class="home-page" role="main">
+      <div class="home-hero">
+        <div class="home-logo">
+          <img src="/logo.svg" alt="AKNCHAT" />
         </div>
-        <div id="sessions-list" class="sessions" role="listbox" aria-label="Oturumlar"></div>
-        <div class="sidebar-bottom">
-          <div class="hint">Geçmiş cihazında saklanır.</div>
-          <div class="sidebar-actions">
-            <button id="open-trash" class="new-chat" aria-label="Çöp kutusunu aç">🗑️ Çöp Kutusu</button>
-            <button id="clear-history" class="new-chat" aria-label="Geçmişi sil">Geçmişi sil</button>
-          </div>
-        </div>
-      </aside>
+        <h1 class="home-title">AKNCHAT</h1>
+        <p class="home-subtitle">Azure OpenAI ile güçlendirilmiş, yeni nesil yapay zeka sohbet asistanınız</p>
+        <a href="/chat.html" class="cta-button">💬 Sohbete Başla</a>
+      </div>
 
-      <section id="chat" class="chat-pane">
-        <header class="chat-pane-head">
-          <div class="head-left">
-            <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Kenar çubuğunu aç/kapat" title="Kenar çubuğunu aç/kapat">
-              <span class="toggle-icon">☰</span>
-            </button>
-            <h1>
-              <img src="/logo.svg" alt="AKNCHAT" class="chat-logo" />
-              AKNCHAT
-            </h1>
-          </div>
-          <div class="head-controls">
-            <select id="palette-select" aria-label="Tema rengi">
-              <option value="blue">Mavi</option>
-              <option value="red">Kırmızı</option>
-              <option value="yellow">Sarı</option>
-              <option value="white">Beyaz</option>
-            </select>
-            <select id="model-select" aria-label="Model seç">
-              <option value="gpt-5-mini">gpt-5-mini</option>
-              <option value="MODEL">MODEL</option>
-            </select>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Tema değiştir">Açık/Koyu</button>
-          </div>
-        </header>
-        <div id="messages" class="messages" role="log" aria-live="polite">
-          <!-- Welcome Screen -->
-          <div class="welcome-screen" id="welcome-screen">
-            <div class="welcome-logo">
-              <img src="/logo.svg" alt="AKNCHAT" />
-            </div>
-            <h2 class="welcome-title">AKNCHAT'e Hoş Geldiniz! 👋</h2>
-            <p class="welcome-subtitle">Azure OpenAI ile güçlendirilmiş, yeni nesil yapay zeka sohbet asistanınız</p>
-            
-            <div class="features-grid">
-              <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3>Akıllı Yanıtlar</h3>
-                <p>GPT-5 teknolojisi ile doğal dil anlama</p>
-              </div>
-              <div class="feature-card">
-                <div class="feature-icon">🖼️</div>
-                <h3>Görsel Analiz</h3>
-                <p>Resimlerinizi anlayıp yorumlayabilirim</p>
-              </div>
-              <div class="feature-card">
-                <div class="feature-icon">💾</div>
-                <h3>Oturum Yönetimi</h3>
-                <p>Sohbet geçmişinizi kaydedin ve yönetin</p>
-              </div>
-              <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3>Modern Tasarım</h3>
-                <p>Glassmorphism ve dark mode desteği</p>
-              </div>
-            </div>
-            
-            <div class="quick-prompts">
-              <p class="prompts-label">💡 Örnek sorular:</p>
-              <button class="prompt-btn" data-prompt="Python'da liste comprehension nasıl kullanılır?">🐍 Python hakkında</button>
-              <button class="prompt-btn" data-prompt="Modern web tasarım trendleri nelerdir?">🎨 Web tasarım</button>
-              <button class="prompt-btn" data-prompt="Yapay zeka teknolojileri nedir?">🤖 Yapay zeka</button>
-              <button class="prompt-btn" data-prompt="Azure OpenAI servislerini anlat">☁️ Azure servisleri</button>
-            </div>
-          </div>
+      <div class="home-features">
+        <div class="feature-card-large">
+          <div class="feature-icon-large">🧠</div>
+          <h2>Akıllı Konuşma Asistanı</h2>
+          <p>GPT-5 teknolojisi ile donanmış AKNCHAT, doğal dil işleme ve anlama yetenekleriyle karmaşık sorularınıza anlamlı yanıtlar verir. Her konuşmada bağlamı koruyarak, daha akıllı ve tutarlı bir sohbet deneyimi sunar.</p>
         </div>
-        <form id="chat-form" class="chat-input" autocomplete="off">
-          <div id="attachments" class="attachments" aria-live="polite"></div>
-          <div class="input-row">
-            <button id="pick-image" class="icon-btn" type="button" title="Resim ekle" aria-label="Resim ekle">📎</button>
-            <input id="file-input" type="file" accept="image/*" multiple hidden />
-            <textarea id="user-input" rows="1" placeholder="Bir şey yazın veya resim yapıştırın..." required aria-label="Mesajınız"></textarea>
-            <button type="submit" aria-label="Mesajı gönder">Gönder</button>
-          </div>
-        </form>
-      </section>
+
+        <div class="feature-card-large">
+          <div class="feature-icon-large">🖼️</div>
+          <h2>Görsel Analiz ve Anlama</h2>
+          <p>Resimlerinizi yükleyin veya yapıştırın, AKNCHAT görselleri analiz edip detaylı açıklamalar yapabilir. Fotoğraf, grafik, diyagram - her türlü görseli anlayıp üzerinde konuşabilirsiniz.</p>
+        </div>
+
+        <div class="feature-card-large">
+          <div class="feature-icon-large">💾</div>
+          <h2>Oturum Yönetimi</h2>
+          <p>Tüm sohbetleriniz güvenli bir şekilde tarayıcınızda saklanır. İstediğiniz zaman geçmiş konuşmalara dönebilir, oturumları silebilir veya çöp kutusundan geri getirebilirsiniz. Verileriniz tamamen size ait.</p>
+        </div>
+
+        <div class="feature-card-large">
+          <div class="feature-icon-large">🎨</div>
+          <h2>Modern ve Şık Tasarım</h2>
+          <p>Glassmorphism tasarım diliyle hazırlanmış modern arayüz, hem açık hem koyu tema seçenekleri sunar. Farklı renk paletleriyle kişiselleştirin, göz yormayan bir deneyim yaşayın.</p>
+        </div>
+      </div>
+
+      <div class="home-cta">
+        <h2>Hazır mısınız?</h2>
+        <p>AKNCHAT ile yapay zeka destekli sohbet deneyimini keşfedin</p>
+        <a href="/chat.html" class="cta-button">Hemen Başla →</a>
+      </div>
     </main>
 
-    <footer class="footer" role="contentinfo">© <span id="year"></span> aknchat • Azure OpenAI ile güçlendirildi</footer>
+  <footer class="footer" role="contentinfo">© <span id="year"></span> AKNCHAT • Azure OpenAI ile güçlendirildi</footer>
 
-    <!-- Trash Modal -->
-    <div id="trash-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="trash-title">
-      <div class="modal-content">
-        <header class="modal-head">
-          <h2 id="trash-title">🗑️ Çöp Kutusu</h2>
-          <button id="close-trash" class="icon-btn" aria-label="Kapat">✕</button>
-        </header>
-        <div id="trash-list" class="trash-list"></div>
-        <footer class="modal-foot">
-          <button id="restore-all" class="btn-secondary">Tümünü Geri Al</button>
-          <button id="empty-trash" class="btn-danger">Çöp Kutusunu Boşalt</button>
-        </footer>
-      </div>
-      <div class="modal-backdrop" tabindex="-1"></div>
-    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      
+      // Mobile nav toggle
+      const navToggle = document.getElementById('nav-toggle');
+      const siteNav = document.getElementById('site-nav');
+      if (navToggle) {
+        navToggle.addEventListener('click', () => {
+          const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+          navToggle.setAttribute('aria-expanded', !expanded);
+          siteNav.classList.toggle('active');
+        });
+      }
 
-    <script src="/app.js" type="module"></script>
+      // Toggle login/logout if B2C configured and user is authenticated
+      fetch('/me').then(r=>r.ok?r.json():{authenticated:false}).then(me=>{
+        const userInfo = document.getElementById('user-info');
+        if (!userInfo) return;
+        if (me && me.authenticated) {
+          userInfo.style.display = '';
+          userInfo.textContent = me.name || me.email || 'Hesabım';
+        } else {
+          userInfo.style.display = 'none';
+        }
+      }).catch(()=>{});
+
+      // Show user name/email when authenticated
+      fetch('/me').then(r=>r.ok?r.json():{authenticated:false}).then(me=>{
+        const userInfo = document.getElementById('user-info');
+        if (!userInfo) return;
+        if (me && me.authenticated) {
+          userInfo.style.display = '';
+          userInfo.textContent = me.name || me.email || 'Hesabım';
+        } else {
+          userInfo.style.display = 'none';
+        }
+      }).catch(()=>{});
+     </script>
   </body>
 </html>
